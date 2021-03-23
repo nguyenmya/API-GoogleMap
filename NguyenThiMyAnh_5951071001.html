@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NguyenThiMyAnh_5951071079</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        <style>
+            #map{
+                height: 100%;
+            }
+            html, body{
+                height: 100%;
+            }
+        </style>
+        <script>
+            function initMap(){
+                const school = { lat: 10.846067, lng: 106.794567 };
+                const myhouse = { lat: 10.8526732, lng: 106.7915002 };
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 12,
+                    center: school,
+                });
+                const directionsService = new google.maps.DirectionsService();
+                const directionsRenderer = new google.maps.DirectionsRenderer();
+                directionsRenderer.setMap(map);
+                directionsService.route(
+                    {
+                        origin: myhouse,
+                        destination: school,
+                        travelMode: google.maps.TravelMode.WALKING,
+                    },
+                    (response, status) => {
+                        if(status == 'OK')
+                            directionsRenderer.setDirections(response);
+                        else
+                            window.alert("Directions request failed due to " + status);
+                    }
+                );
+                const schoolmarker = new google.maps.Marker({
+                    position : school,
+                    map: map,
+                    icon: "UTC2.png",
+                });
+                const myhousemarker = new google.maps.Marker({
+                    position : myhouse,
+                    map: map, 
+                    icon: "myhouse.png",
+                });
+                const schoolInfo = "Địa chỉ: 450-451 Lê Văn Việt, Phường Tăng Nhơn Phú A, Tp. Thủ Đức, TP. Hồ Chí Minh";
+                const myhouseInfo = "Họ Tên: Nguyễn Thị Mỹ Anh<br>MSSV: 5951071001<br>Ngày sinh: 08/08/2000";
+
+                const addSchoolInfo = new google.maps.InfoWindow({
+                    content : thongTinTruong
+                });
+
+                const addMyHouseInfo = new google.maps.InfoWindow({
+                    content : thongTinNha
+                });
+
+                schoolmarker.addListener("click", ()=>{
+                    addSchoolInfo.open(map, truongMarker);
+                });
+
+                myhousemarker.addListener("click", ()=>{
+                    addMyHouseInfo.open(map, nhaMarker);
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=&v=weekly"
+            async
+        ></script>
+    </body>
+</html>
